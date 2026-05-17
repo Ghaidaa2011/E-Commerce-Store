@@ -4,15 +4,16 @@ import { Mail, Lock, LogIn, ArrowRight } from "lucide-react";
 import { AuthCard } from "../components/Auth/AuthCard";
 import { Input } from "../components/Auth/Input";
 import { Button } from "../components/Auth/Button";
+import { useUserStore } from "../store/useUserStore";
 
 const LogInPage = () => {
+  const { login, loading } = useUserStore();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const loading = false;
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(email, password);
+    login(email, password);
   };
 
   return (

@@ -4,9 +4,10 @@ import { User, Mail, Lock, UserPlus, ArrowRight } from "lucide-react";
 import { AuthCard } from "../components/Auth/AuthCard";
 import { Input } from "../components/Auth/Input";
 import { Button } from "../components/Auth/Button";
+import { useUserStore } from "../store/useUserStore";
 
 const SignUpPage = () => {
-  const loading = false;
+  const { signup, loading } = useUserStore();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -16,7 +17,7 @@ const SignUpPage = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(formData);
+    signup(formData);
   };
 
   return (
