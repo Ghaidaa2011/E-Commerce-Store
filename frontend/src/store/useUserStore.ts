@@ -20,6 +20,8 @@ interface UserState {
   checkingAuth: boolean;
   signup: (formData: SignupFormData) => Promise<void>;
   login: (email: string, password: string) => Promise<void>;
+  checkAuth: () => Promise<void>;
+  logout: () => Promise<void>;
 }
 
 export const useUserStore = create<UserState>((set) => ({
@@ -54,6 +56,26 @@ export const useUserStore = create<UserState>((set) => ({
     } catch (error: any) {
       set({ loading: false });
       const errorMessage = error.response?.data?.message || error.message || "An error occurred";
+      toast.error(errorMessage);
+    }
+  },
+  checkAuth: async () => {
+    set({ checkingAuth: true });
+    try {
+      const response = await axios.get("/auth/profile");
+      set({ user: response.data, checkingAuth: false });
+    } catch (error: any) {
+      console.log(error.message);
+      set({ checkingAuth: false, user: null });
+    }
+  },
+  logout: async () => {
+    try {
+      await axios.post("/auth/logout");
+      set({ user: null });
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.message || error.message || "An error occurred during logout";
+
       toast.error(errorMessage);
     }
   },

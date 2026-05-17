@@ -7,9 +7,15 @@ import LoginPage from "./pages/LogInPage";
 import Navbar from "./components/common/Navbar";
 import { Toaster } from "react-hot-toast";
 import { useUserStore } from "./store/useUserStore";
+import { useEffect } from "react";
+import LoadingSpinner from "./components/ui/LoadingSpinner";
 
 function App() {
-  const { user } = useUserStore();
+  const { user, checkAuth, checkingAuth } = useUserStore();
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
+  if (checkingAuth) return <LoadingSpinner />;
   return (
     <div className="min-h-screen bg-gray-900 text-white relative overflow-hidden">
       {/* Background gradient */}
