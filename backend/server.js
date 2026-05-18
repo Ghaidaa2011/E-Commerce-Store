@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import path from "path";
 
 import authRoutes from "./routes/auth.route.js";
+import productRoutes from "./routes/product.route.js";
 
 import { connectDB } from "./lib/db.js";
 
@@ -18,6 +19,8 @@ app.use(express.json({ limit: "10mb" })); // allows you to parse the body of the
 app.use(cookieParser());
 
 app.use("/api/auth", authRoutes);
+app.use("/api/products", productRoutes);
+
 
 app.listen(PORT, () => {
 	console.log("Server is running on http://localhost:" + PORT);
