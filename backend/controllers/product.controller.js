@@ -80,6 +80,7 @@ export const deleteProduct = async (req, res) => {
 		}
 
 		await Product.findByIdAndDelete(req.params.id);
+		await updateFeaturedProductsCache();
 
 		res.json({ message: "Product deleted successfully" });
 	} catch (error) {
