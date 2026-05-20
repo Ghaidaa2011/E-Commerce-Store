@@ -1,14 +1,15 @@
 import { Navigate, Route, Routes } from "react-router-dom";
-
+import { Toaster } from "react-hot-toast";
+import { useUserStore } from "./store/useUserStore";
+import { useEffect } from "react";
+//pages
 import HomePage from "./pages/HomePage";
 import SignUpPage from "./pages/SignUpPage";
 import LoginPage from "./pages/LogInPage";
 import AdminPage from "./pages/AdminPage";
-
+import CategoryPage from "./pages/CategoryPage";
+//components
 import Navbar from "./components/common/Navbar";
-import { Toaster } from "react-hot-toast";
-import { useUserStore } from "./store/useUserStore";
-import { useEffect } from "react";
 import LoadingSpinner from "./components/ui/LoadingSpinner";
 
 function App() {
@@ -44,6 +45,7 @@ function App() {
               user?.role === "admin" ? <AdminPage /> : <Navigate to="/login" />
             }
           />
+          <Route path="/category/:category" element={<CategoryPage />} />
         </Routes>
       </div>
       <Toaster />

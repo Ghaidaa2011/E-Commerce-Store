@@ -17,7 +17,7 @@ interface ProductState {
   setProducts: (products: Product[]) => void;
   createProduct: (productData: any) => Promise<void>;
   fetchAllProducts: () => Promise<void>;
-  // fetchProductsByCategory: (category: string) => Promise<void>;
+  fetchProductsByCategory: (category: string) => Promise<void>;
   deleteProduct: (productId: string) => Promise<void>;
   toggleFeaturedProduct: (productId: string) => Promise<void>;
   // fetchFeaturedProducts: () => Promise<void>;
@@ -51,16 +51,16 @@ export const useProductStore = create<ProductState>((set) => ({
       set({ loading: false });
     }
   },
-  // fetchProductsByCategory: async (category) => {
-  //   set({ loading: true });
-  //   try {
-  //     const response = await axios.get(`/products/category/${category}`);
-  //     set({ products: response.data.products, loading: false });
-  //   } catch (error) {
-  //     set({ error: "Failed to fetch products", loading: false });
-  //     toast.error(error.response.data.error || "Failed to fetch products");
-  //   }
-  // },
+  fetchProductsByCategory: async (category) => {
+    set({ loading: true });
+    try {
+      const response = await axios.get(`/products/category/${category}`);
+      set({ products: response.data.products, loading: false });
+    } catch (error: any) {
+      toast.error(error.response?.data?.error || "Failed to fetch products");
+      set({ loading: false });
+    }
+  },
   deleteProduct: async (productId) => {
     set({ loading: true });
     try {
