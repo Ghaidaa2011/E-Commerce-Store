@@ -8,16 +8,27 @@ import SignUpPage from "./pages/SignUpPage";
 import LoginPage from "./pages/LogInPage";
 import AdminPage from "./pages/AdminPage";
 import CategoryPage from "./pages/CategoryPage";
+import CartPage from "./pages/CartPage";
 //components
 import Navbar from "./components/common/Navbar";
 import LoadingSpinner from "./components/ui/LoadingSpinner";
+import { useCartStore } from "./store/useCartStore";
 
 function App() {
   const { user, checkAuth, checkingAuth } = useUserStore();
+  const { getCartItems } = useCartStore();
+
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
+
+  useEffect(() => {
+    if (!user) return;
+    getCartItems();
+  }, [getCartItems, user]);
+
   if (checkingAuth) return <LoadingSpinner />;
+
   return (
     <div className="min-h-screen bg-gray-900 text-white relative overflow-hidden">
       {/* Background gradient */}
@@ -46,6 +57,10 @@ function App() {
             }
           />
           <Route path="/category/:category" element={<CategoryPage />} />
+          <Route
+            path="/cart"
+            element={user ? <CartPage /> : <Navigate to="/login" />}
+          />
         </Routes>
       </div>
       <Toaster />

@@ -24,8 +24,8 @@ interface CartState {
   getCartItems: () => Promise<void>;
   // clearCart: () => Promise<void>;
   addToCart: (product: { _id: string; name: string; price: number }) => Promise<void>;
-  // removeFromCart: (productId: string) => Promise<void>;
-  // updateQuantity: (productId: string, quantity: number) => Promise<void>;
+  removeFromCart: (productId: string) => Promise<void>;
+  updateQuantity: (productId: string, quantity: number) => Promise<void>;
   calculateTotals: () => void;
 }
 
@@ -92,23 +92,23 @@ export const useCartStore = create<CartState>((set, get) => ({
       toast.error(error.response?.data?.message || "An error occurred");
     }
   },
-  // removeFromCart: async (productId) => {
-  //   await axios.delete(`/cart`, { data: { productId } });
-  //   set((prevState) => ({ cart: prevState.cart.filter((item) => item._id !== productId) }));
-  //   get().calculateTotals();
-  // },
-  // updateQuantity: async (productId, quantity) => {
-  //   if (quantity === 0) {
-  //     get().removeFromCart(productId);
-  //     return;
-  //   }
+  removeFromCart: async (productId) => {
+    await axios.delete(`/cart`, { data: { productId } });
+    set((prevState) => ({ cart: prevState.cart.filter((item) => item._id !== productId) }));
+    get().calculateTotals();
+  },
+  updateQuantity: async (productId, quantity) => {
+    if (quantity === 0) {
+      get().removeFromCart(productId);
+      return;
+    }
 
-  //   await axios.put(`/cart/${productId}`, { quantity });
-  //   set((prevState) => ({
-  //     cart: prevState.cart.map((item) => (item._id === productId ? { ...item, quantity } : item)),
-  //   }));
-  //   get().calculateTotals();
-  // },
+    await axios.put(`/cart/${productId}`, { quantity });
+    set((prevState) => ({
+      cart: prevState.cart.map((item) => (item._id === productId ? { ...item, quantity } : item)),
+    }));
+    get().calculateTotals();
+  },
   calculateTotals: () => {
     const { cart, coupon } = get();
     const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
