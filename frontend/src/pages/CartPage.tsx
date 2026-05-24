@@ -3,6 +3,8 @@ import { useCartStore } from "../store/useCartStore";
 import EmptyCartUI from "../components/cart/EmptyCartUI";
 import CartItem from "../components/cart/CartItem";
 import PeopleAlsoBought from "../components/cart/PeopleAlsoBought";
+import OrderSummary from "../components/cart/OrderSummary";
+import GiftCouponCard from "../components/cart/GiftCouponCard";
 
 const CartPage = () => {
   const { cart } = useCartStore();
@@ -28,7 +30,7 @@ const CartPage = () => {
             )}
             {cart.length > 0 && <PeopleAlsoBought />}
           </motion.div>
-          {/* {cart.length > 0 && (
+          {cart.length > 0 && (
             <motion.div
               className="mx-auto mt-6 max-w-4xl flex-1 space-y-6 lg:mt-0 lg:w-full"
               initial={{ opacity: 0, x: 20 }}
@@ -38,7 +40,7 @@ const CartPage = () => {
               <OrderSummary />
               <GiftCouponCard />
             </motion.div>
-          )} */}
+          )}
         </div>
       </div>
     </div>
