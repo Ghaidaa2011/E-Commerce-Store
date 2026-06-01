@@ -14,17 +14,19 @@ interface Product {
 interface ProductState {
   products: Product[];
   loading: boolean;
+  error?: null | string;
   setProducts: (products: Product[]) => void;
   createProduct: (productData: any) => Promise<void>;
   fetchAllProducts: () => Promise<void>;
   fetchProductsByCategory: (category: string) => Promise<void>;
   deleteProduct: (productId: string) => Promise<void>;
   toggleFeaturedProduct: (productId: string) => Promise<void>;
-  // fetchFeaturedProducts: () => Promise<void>;
+  fetchFeaturedProducts: () => Promise<void>;
 }
 export const useProductStore = create<ProductState>((set) => ({
   products: [],
   loading: false,
+  error: null,
 
   setProducts: (products) => set({ products }),
   createProduct: async (productData) => {
@@ -90,14 +92,14 @@ export const useProductStore = create<ProductState>((set) => ({
       toast.error(error.response?.data?.error || "Failed to toggle featured status");
     }
   },
-  // fetchFeaturedProducts: async () => {
-  //   set({ loading: true });
-  //   try {
-  //     const response = await axios.get("/products/featured");
-  //     set({ products: response.data, loading: false });
-  //   } catch (error) {
-  //     set({ error: "Failed to fetch products", loading: false });
-  //     console.log("Error fetching featured products:", error);
-  //   }
-  // },
+  fetchFeaturedProducts: async () => {
+    set({ loading: true });
+    try {
+      const response = await axios.get("/products/featured");
+      set({ products: response.data, loading: false });
+    } catch (error: any) {
+      set({ error: "Failed to fetch products", loading: false });
+      console.log("Error fetching featured products:", error);
+    }
+  },
 }));
