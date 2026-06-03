@@ -29,8 +29,10 @@ app.use("/api/coupons", couponRoutes);
 app.use("/api/analytics", analyticsRoutes);
 
 if (process.env.NODE_ENV === "production") {
+app.use(express.static(path.join(__dirname, "/frontend/dist")));
+
 app.use((req, res, next) => {
-  if (req.url.startsWith('/api')) {
+  if (req.url.startsWith('/api') || req.url.includes('.')) {
     return next();
   }
   res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"));
