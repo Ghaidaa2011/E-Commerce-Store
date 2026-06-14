@@ -19,8 +19,8 @@ interface CartState {
   subtotal: number;
   isCouponApplied: boolean;
   // getMyCoupon: () => Promise<void>;
-  // applyCoupon: (code: string) => Promise<void>;
-  // removeCoupon: () => void;
+  applyCoupon: (code: string) => void;
+  removeCoupon: () => void;
   getCartItems: () => Promise<void>;
   // clearCart: () => Promise<void>;
   addToCart: (product: { _id: string; name: string; price: number }) => Promise<void>;
@@ -35,7 +35,32 @@ export const useCartStore = create<CartState>((set, get) => ({
   total: 0,
   subtotal: 0,
   isCouponApplied: false,
+  applyCoupon: (code: string) => {
+    if (code.trim().toUpperCase() === "MARIEM14") {
+      set({
+        coupon: {
+          code: "MARIEM14",
+          discountPercentage: 10,
+        },
+        isCouponApplied: true,
+      });
 
+      get().calculateTotals();
+      toast.success("Coupon applied successfully");
+    } else {
+      toast.error("Invalid coupon code");
+    }
+  },
+
+  removeCoupon: () => {
+    set({
+      coupon: null,
+      isCouponApplied: false,
+    });
+
+    get().calculateTotals();
+    toast.success("Coupon removed");
+  },
   // getMyCoupon: async () => {
   //   try {
   //     const response = await axios.get("/coupons");
